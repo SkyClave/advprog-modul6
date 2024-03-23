@@ -9,5 +9,5 @@ Pada fungsi ```handle_connection```, dibuat instance baru sebuah ```Bufreader```
 
 Perubahan dari commit sebelumnya adalah didefinisikan sebuah response untuk http request yang ada. Didefinisikan header responsenya, lalu dibuat satu halaman html. Dengan menggunakan modul ```fs```, file html itu dibaca dan lalu dihitung panjang kontennya. Lalu semua output yang ada diformat ke dalam satu variabel response. Panjang konten dihitung untuk memastikan konten http yang valid (sesuai dengan panjang ```hello.html```). Response lalu ditulis sebagai output ke stream. Saat ini belum dilakukan handling input dari request, sehingga semua request akan mendapatkan response berupa ```hello.html```.
 
-![Commit 2 screen capture 1](/assets/images/commit2a.png)
-![Commit 2 screen capture 2](/assets/images/commit2b.png)
+![Commit 2 screen capture 1](/assets/images/commit2a.jpg)
+![Commit 2 screen capture 2](/assets/images/commit2b.jpg)
