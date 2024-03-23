@@ -54,3 +54,6 @@ Threadpool adalah sekumpulan grup thread yang dispawn yang tersedia untuk melaks
 
 Diminta untuk membuat fungsi build untuk menggantikan new untuk validasi error ketika membuat threadpool tanpa thread sama sekali. Di website harus return dalam bentuk ```Result<ThreadPool, PoolCreationError>```.
 Lalu didefinisikan PoolCreationError dengan InvalidSize untuk menggambarkan kondisi threadpool yang tidak valid sizenya. Error yang ada lalu didefinisikan pesannya untuk diteruskan nantinya. Di main.rs, result juga dimap untuk ke threadpool dan error. Jika error ada dalam result, maka pesan error akan ditampilkan ke layar.
+
+Contoh error di layar ketika membuat thread dengan size 0:
+![Commit bonus screen capture 1](/assets/images/commitbonus.jpg)
