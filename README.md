@@ -45,3 +45,7 @@ Bagian kode snip sama namun isi variabel berbeda. Sehingga terjadi duplikasi kod
 ## Commit 4 : Simulation slow response
 
 Saat ini program masih berjalan dengan single-threaded. Lalu saat /sleep diakses thread akan menunggu 5 detik sebelum memproses menampilkan response. Program berjalan single-threaded berarti request yang ada akan berada pada suatu antrian yang hanya 1 request yang diproses pada suatu waktu. Sehingga saat mengakses sleep/ lalu di windows lain mencoba akses / maka proses mendapatkan response akan menjadi lebih lama. Hal ini karena sleep/ menunggu 5 detik dan belum selesai saat dibuka / di windows lain sehingga windows yang membuka / harus menunggu sampai sleep/ selesai dan baru diproses requestnya. Jika hal ini terjadi pada banyak user dan ada halaman yang memiliki waktu pemrosesannya yang lama serta masih single-threaded, maka akan terasa penurunan performa yang drastis.
+
+## Commit 5 : Multithreaded server using Threadpool
+
+Threadpool adalah sekumpulan grup thread yang dispawn yang tersedia untuk melaksanakan task. Saat suatu program menerima satu task, maka akan ada thread dari threadpool yang diassign task tersebut. Thread lainnya yang saat ini tidak mengerjakan task (idle) tersedia untuk memproses task selanjutnya. Ketika thread sudah menyelesaikan tasknya, thread tersebut kembali ke threadpool sebagai thread yang idle. Threadpool dapat membuat suatu program dapat berjalan secara multi-thread dan meningkatkan throughput dari server.
