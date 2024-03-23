@@ -41,3 +41,7 @@ Bagian kode snip sama namun isi variabel berbeda. Sehingga terjadi duplikasi kod
 
 ![Commit 3 screen capture 1](/assets/images/commit3a.jpg)
 ![Commit 3 screen capture 2](/assets/images/commit3b.jpg)
+
+## Commit 4 : Simulation slow response
+
+Saat ini program masih berjalan dengan single-threaded. Lalu saat /sleep diakses thread akan menunggu 5 detik sebelum memproses menampilkan response. Program berjalan single-threaded berarti request yang ada akan berada pada suatu antrian yang hanya 1 request yang diproses pada suatu waktu. Sehingga saat mengakses sleep/ lalu di windows lain mencoba akses / maka proses mendapatkan response akan menjadi lebih lama. Hal ini karena sleep/ menunggu 5 detik dan belum selesai saat dibuka / di windows lain sehingga windows yang membuka / harus menunggu sampai sleep/ selesai dan baru diproses requestnya. Jika hal ini terjadi pada banyak user dan ada halaman yang memiliki waktu pemrosesannya yang lama serta masih single-threaded, maka akan terasa penurunan performa yang drastis.
