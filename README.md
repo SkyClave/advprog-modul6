@@ -49,3 +49,8 @@ Saat ini program masih berjalan dengan single-threaded. Lalu saat /sleep diakses
 ## Commit 5 : Multithreaded server using Threadpool
 
 Threadpool adalah sekumpulan grup thread yang dispawn yang tersedia untuk melaksanakan task. Saat suatu program menerima satu task, maka akan ada thread dari threadpool yang diassign task tersebut. Thread lainnya yang saat ini tidak mengerjakan task (idle) tersedia untuk memproses task selanjutnya. Ketika thread sudah menyelesaikan tasknya, thread tersebut kembali ke threadpool sebagai thread yang idle. Threadpool dapat membuat suatu program dapat berjalan secara multi-thread dan meningkatkan throughput dari server.
+
+## (Bonus) Function improvement
+
+Diminta untuk membuat fungsi build untuk menggantikan new untuk validasi error ketika membuat threadpool tanpa thread sama sekali. Di website harus return dalam bentuk ```Result<ThreadPool, PoolCreationError>```.
+Lalu didefinisikan PoolCreationError dengan InvalidSize untuk menggambarkan kondisi threadpool yang tidak valid sizenya. Error yang ada lalu didefinisikan pesannya untuk diteruskan nantinya. Di main.rs, result juga dimap untuk ke threadpool dan error. Jika error ada dalam result, maka pesan error akan ditampilkan ke layar.

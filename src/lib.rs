@@ -1,6 +1,8 @@
 use std::{
     sync::{mpsc, Arc, Mutex},
     thread,
+    error::Error,
+    fmt,
 };
 
 pub struct ThreadPool {
@@ -11,20 +13,20 @@ pub struct ThreadPool {
 type Job = Box<dyn FnOnce() + Send + 'static>;
 
 impl ThreadPool {
-    pub fn new(size: usize) -> ThreadPool {
-        assert!(size > 0);
+    pub fn build(size: usize) -> Result<ThreadPool, PoolCreationError> {
+        if size < 1 {
+            return Err(PoolCreationError::InvalidSize);
+        }
 
         let (sender, receiver) = mpsc::channel();
-
         let receiver = Arc::new(Mutex::new(receiver));
-
         let mut workers = Vec::with_capacity(size);
 
         for id in 0..size {
-            workers.push(Worker::new(id, Arc::clone(&receiver)));
+            workers.push(Worker::new(id, Arc::clone(&receiver))?);
         }
 
-        ThreadPool { workers, sender }
+        Ok(ThreadPool { workers, sender })
     }
 
     pub fn execute<F>(&self, f: F)
@@ -32,7 +34,6 @@ impl ThreadPool {
         F: FnOnce() + Send + 'static,
     {
         let job = Box::new(f);
-
         self.sender.send(job).unwrap();
     }
 }
@@ -43,15 +44,28 @@ struct Worker {
 }
 
 impl Worker {
-    fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker {
+    fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Result<Worker, PoolCreationError> {
         let thread = thread::spawn(move || loop {
             let job = receiver.lock().unwrap().recv().unwrap();
-
-            println!("Worker {id} got a job; executing.");
-
+            println!("Worker {} got a job; executing.", id);
             job();
         });
 
-        Worker { id, thread }
+        Ok(Worker { id, thread })
     }
 }
+
+#[derive(Debug)]
+pub enum PoolCreationError {
+    InvalidSize,
+}
+
+impl fmt::Display for PoolCreationError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            PoolCreationError::InvalidSize => write!(f, "Thread pool size must be a positive integer."),
+        }
+    }
+}
+
+impl Error for PoolCreationError {}
